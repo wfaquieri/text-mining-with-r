@@ -82,6 +82,8 @@ tidy_twitter <- twitter_data %>%
   # Tokenize the twitter data
   unnest_tokens(word,tweet_text) 
 
+tidy_twitter %>% saveRDS('data/tidy_twitter.rds')
+
 tidy_twitter %>% 
   # Compute word counts
   count(word) %>% 
