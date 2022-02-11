@@ -206,3 +206,495 @@ paste(my_toppings_and,collapse = ", ")
 # str_c() my_toppings_str with collapse = ", "
 str_c(my_toppings_str,collapse = ", ")
 
+
+
+
+
+# -------------------------------------------------------------------------
+
+
+library(stringr)
+library(babynames)
+library(dplyr)
+
+
+
+# Extracting vectors for boys' and girls' names
+babynames_2014 <- filter(babynames, year == 2014)
+boy_names <- filter(babynames_2014, sex == "M")$name
+girl_names <- filter(babynames_2014, sex == "F")$name
+
+# Take a look at a few boy_names
+head(boy_names)
+
+# Find the length of all boy_names
+boy_length <- str_length(boy_names)
+
+# Take a look at a few lengths
+head(boy_length)
+
+# Find the length of all girl_names
+girl_length <- str_length(girl_names)
+
+# Find the difference in mean length
+mean(girl_length) - mean(boy_length)
+
+# Confirm str_length() works with factors
+head(str_length(factor(boy_names)))
+
+
+
+# Extract first letter from boy_names
+boy_first_letter <- str_sub(boy_names,1,1)
+
+# Tabulate occurrences of boy_first_letter
+table(boy_first_letter)
+
+# Extract the last letter in boy_names, then tabulate
+boy_last_letter <- str_sub(boy_names,-1,-1)
+table(boy_last_letter)
+
+# Extract the first letter in girl_names, then tabulate
+girl_first_letter <- str_sub(girl_names,1,1)
+table(girl_first_letter)
+
+# Extract the last letter in girl_names, then tabulate
+girl_last_letter <- str_sub(girl_names,-1,-1)
+table(girl_last_letter)
+
+
+
+
+# Look for pattern "zz" in boy_names
+contains_zz <- str_detect(boy_names,"zz")
+
+# Examine str() of contains_zz
+str(contains_zz)
+
+# How many names contain "zz"?
+sum(contains_zz)
+
+# Which names contain "zz"?
+boy_names[contains_zz]
+
+# Which rows in boy_df have names that contain "zz"?
+filter(boy_df,str_detect(name,"zz"))
+
+
+
+
+# Find boy_names that contain "zz"
+str_subset(boy_names, fixed("zz"))
+
+# Find girl_names that contain "zz"
+str_subset(girl_names, fixed("zz"))
+
+# Find girl_names that contain "U"
+starts_U <- str_subset(girl_names, fixed("U"))
+starts_U
+
+# Find girl_names that contain "U" and "z"
+str_subset(starts_U, fixed("z"))
+
+
+
+
+# Count occurrences of "a" in girl_names
+number_as <- str_count(girl_names,"a")
+
+# Count occurrences of "A" in girl_names
+number_As <- str_count(girl_names,"A")
+
+# Histograms of number_as and number_As
+hist(number_as)
+hist(number_As)  
+
+# Find total "a" + "A"
+total_as <- number_as + number_As
+
+# girl_names with more than 4 a's
+girl_names[total_as > 4]
+
+
+
+
+# Some date data
+date_ranges <- c("23.01.2017 - 29.01.2017", "30.01.2017 - 06.02.2017")
+
+# Split dates using " - "
+split_dates <- str_split(date_ranges," - ")
+split_dates
+
+# Split dates with n and simplify specified
+split_dates_n <- str_split(date_ranges, fixed(" - "), n = 2, simplify = TRUE)
+split_dates_n
+
+
+# Subset split_dates_n into start_dates and end_dates
+start_dates <- split_dates_n[,1]
+
+# Split start_dates into day, month and year pieces
+str_split(start_dates, fixed("."), n = 3, simplify = TRUE)
+
+
+
+
+both_names <- c("Box, George", "Cox, David")
+
+# Split both_names into first_names and last_names
+both_names_split <- str_split(both_names, fixed(", "), n = 2, simplify = TRUE)
+
+# Get first names
+first_names <- both_names_split[, 2]
+
+# Get last names
+last_names <- both_names_split[, 1]
+
+
+
+
+# Como exemplo, você fará algumas estatísticas de texto simples em suas linhas 
+# de Alice no País das Maravilhas do Capítulo 1. Seu objetivo será calcular 
+# quantas palavras há em cada linha e o comprimento médio das palavras em cada 
+# linha.
+
+# Split lines into words
+words <- str_split(lines, " ")
+
+# Number of words per line
+lapply(words, length)
+
+# Number of characters in each word
+word_lengths <- lapply(words, str_length)
+
+# Average word length per line
+lapply(word_lengths, mean)
+
+
+
+
+# Some IDs
+ids <- c("ID#: 192", "ID#: 118", "ID#: 001")
+
+# Replace "ID#: " with ""
+id_nums <- str_replace(ids,"ID#: ","")
+
+# Turn id_nums into numbers
+id_ints <- as.numeric(id_nums)
+
+# Some (fake) phone numbers
+phone_numbers <- c("510-555-0123", "541-555-0167")
+
+# Use str_replace() to replace "-" with " "
+str_replace(phone_numbers,"-"," ")
+
+# Use str_replace_all() to replace "-" with " "
+str_replace_all(phone_numbers,"-"," ")
+
+# Turn phone numbers into the format xxx.xxx.xxxx
+str_replace_all(phone_numbers,"-",".")
+
+
+
+
+# Find the number of nucleotides in each sequence
+str_length(genes)
+
+# Find the number of A's occur in each sequence
+str_count(genes, fixed("A"))
+
+# Return the sequences that contain "TTTTTT"
+str_subset(genes, fixed("TTTTTT"))
+
+# Replace all the "A"s in the sequences with a "_"
+str_replace_all(genes, fixed("A"), "_")
+
+
+
+
+# Define some full names
+names <- c("Diana Prince", "Clark Kent")
+
+# Split into first and last names
+names_split <- str_split(names," ",simplify = T)
+
+# Extract the first letter in the first name
+abb_first <- str_sub(names_split[,1],1,1)
+
+# Combine the first letter ". " and last name
+str_c(abb_first,". ",names_split[,2])
+
+
+
+
+
+# Use all names in babynames_2014
+all_names <- babynames_2014$name
+
+# Get the last two letters of all_names
+last_two_letters <- str_sub(all_names, -2, -1)
+
+# Does the name end in "ee"?
+ends_in_ee <- str_detect(last_two_letters, "ee")
+
+# Extract rows and "sex" column
+sex <- babynames_2014$sex[ends_in_ee]
+
+# Display result as a table
+table(sex)
+
+
+
+library(rebus)
+
+# Some strings to practice with
+x <- c("cat", "coat", "scotland", "tic toc")
+
+# Print END
+END
+
+# Run me
+str_view(x, pattern = START %R% "c")
+
+# Match the strings that start with "co" 
+str_view(x, pattern = START %R% "co")
+
+# Match the strings that end with "at"
+str_view(x, pattern = "at" %R% END)
+
+
+# Match the string that is exactly "cat"
+str_view(x, pattern = START %R% "cat" %R% END)
+
+
+# Match two characters, where the second is a "t"
+str_view(x, pattern = ANY_CHAR %R% "t")
+
+# Match a "t" followed by any character
+str_view(x, pattern = "t" %R% ANY_CHAR)
+
+# Match two characters
+str_view(x, pattern = ANY_CHAR %R% ANY_CHAR)
+
+# Match a string with exactly three characters
+str_view(x, pattern = START %R% ANY_CHAR %R% ANY_CHAR %R% ANY_CHAR %R% END)
+
+
+
+
+pattern <- "q" %R% ANY_CHAR
+
+# Find names that have the pattern
+names_with_q <- str_subset(boy_names, pattern)
+
+# How many names were there?
+length(names_with_q)
+
+
+
+# Find part of name that matches pattern
+part_with_q <- str_extract(boy_names, pattern)
+
+# Get a table of counts
+table(part_with_q)
+
+
+# Did any names have the pattern more than once?
+count_of_q <- str_count(boy_names,pattern)
+
+# Get a table of counts
+table(count_of_q)
+
+
+# Which babies got these names?
+with_q <- str_detect(boy_names, pattern)
+
+# What fraction of babies got these names?
+mean(with_q)
+
+
+
+
+# Match Jeffrey or Geoffrey
+whole_names <- or("Jeffrey", "Geoffrey")
+str_view(boy_names, pattern = whole_names, match = TRUE)
+
+# Match Jeffrey or Geoffrey, another way
+common_ending <- or("Je", "Geo") %R% "ffrey"
+str_view(boy_names, pattern = common_ending, match = TRUE)
+
+# Match with alternate endings
+by_parts <- or("Je", "Geo") %R% "ff" %R% or("ry", "ery","rey","erey")
+str_view(boy_names, pattern = by_parts, match = TRUE)
+
+# Match names that start with Cath or Kath
+ckath <- or("C", "K") %R% "ath"
+str_view(girl_names, pattern = ckath, match = TRUE)
+
+
+
+
+# Create character class containing vowels
+vowels <- char_class("aeiouAEIOU")
+
+# Print vowels
+vowels
+
+# See vowels in x with str_view()
+str_view(x, pattern = vowels)
+
+# See vowels in x with str_view_all()
+str_view_all(x,pattern = vowels)
+
+# Number of vowels in boy_names
+num_vowels <- str_count(boy_names, pattern = vowels)
+
+# Number of characters in boy_names
+name_length <-  str_length(boy_names)
+
+# Calc mean number of vowels
+mean(num_vowels)
+
+# Calc mean fraction of vowels per name
+mean(num_vowels / name_length)
+
+# Vowels from last exercise
+vowels <- char_class("aeiouAEIOU")
+
+# See names with only vowels
+str_view(boy_names, 
+         pattern = exactly(one_or_more(vowels)), 
+         match = TRUE)
+
+# Use `negated_char_class()` for everything but vowels
+not_vowels <- negated_char_class("aeiouAEIOU")
+
+# See names with no vowels
+str_view(boy_names, 
+         pattern = exactly(one_or_more(not_vowels)), 
+         match = TRUE)
+
+
+contact = c("Call me at 555-555-0191","123 Main St","(555) 555 0191",
+            "Phone: 555.555.0191 Mobile: 555.555.0192")
+
+# Create a three digit pattern
+three_digits <- DGT %R% DGT %R% DGT
+
+# Test it
+str_view_all(contact, pattern = three_digits)
+
+# Create a separator pattern
+separator <- char_class("-.() ") # <regex> [-.() ]
+
+# Test it
+str_view_all(contact, pattern = separator)
+
+# Use these components
+three_digits <- DGT %R% DGT %R% DGT
+four_digits <- three_digits %R% DGT
+separator <- char_class("-.() ")
+
+# Create phone pattern # <regex> [\(]?\d\d\d[-.() ]*\d\d\d[-.() ]*\d\d\d\d
+phone_pattern <- optional(OPEN_PAREN) %R% 
+  three_digits %R% 
+  zero_or_more(separator) %R% 
+  three_digits %R% 
+  zero_or_more(separator) %R%
+  four_digits
+
+
+# Test it           
+str_view_all(contact, pattern = phone_pattern)
+
+
+# Use this pattern
+three_digits <- DGT %R% DGT %R% DGT
+four_digits <- three_digits %R% DGT
+separator <- char_class("-.() ")
+phone_pattern <- optional(OPEN_PAREN) %R% 
+  three_digits %R% 
+  zero_or_more(separator) %R% 
+  three_digits %R% 
+  zero_or_more(separator) %R%
+  four_digits
+
+# Extract phone numbers
+str_extract(contact, pattern = phone_pattern)
+
+# Extract ALL phone numbers
+str_extract_all(contact, pattern = phone_pattern)
+
+narratives = c(
+  "19YOM-SHOULDER STRAIN-WAS TACKLED WHILE PLAYING FOOTBALL W/ FRIENDS ",
+  "31 YOF FELL FROM TOILET HITITNG HEAD SUSTAINING A CHI ",
+  "ANKLE STR. 82 YOM STRAINED ANKLE GETTING OUT OF BED ",
+  "TRIPPED OVER CAT AND LANDED ON HARDWOOD FLOOR. LACERATION ELBOW, LEFT. 33 YOF*",
+  "10YOM CUT THUMB ON METAL TRASH CAN DX AVULSION OF SKIN OF THUMB ",
+  "53 YO F TRIPPED ON CARPET AT HOME. DX HIP CONTUSION ",
+  "13 MOF TRYING TO STAND UP HOLDING ONTO BED FELL AND HIT FOREHEAD ON RADIATOR DX LACERATION",
+  "14YR M PLAYING FOOTBALL; DX KNEE SPRAIN ",
+  "55YOM RIDER OF A BICYCLE AND FELL OFF SUSTAINED A CONTUSION TO KNEE ",
+  "5 YOM ROLLING ON FLOOR DOING A SOMERSAULT AND SUSTAINED A CERVICAL STRA IN"
+)
+
+# Pattern to match one or two digits # <regex> \d[\d]?
+age <- DGT %R% optional(DGT)
+
+# Test it
+str_view(narratives, pattern = age)
+
+# Use this pattern
+age <- DGT %R% optional(DGT)
+
+# Pattern to match units 
+unit <- or("YO","YR","MO")
+
+# Test pattern with age then units
+str_view(narratives, pattern = age %R% unit)
+
+# Use these patterns
+age <- DGT %R% optional(DGT)
+unit <- optional(SPC) %R% or("YO", "YR", "MO")
+
+# Pattern to match gender
+gender <-  optional(SPC) %R% or("M", "F")
+
+# Test pattern with age then units then gender
+str_view(narratives, pattern = age %R% unit %R% gender)
+
+
+# Use these patterns
+age <- DGT %R% optional(DGT)
+unit <- optional(SPC) %R% or("YO", "YR", "MO")
+gender <- optional(SPC) %R% or("M", "F")
+
+# Extract age, unit, gender
+age_gender = str_extract(narratives,pattern=age %R% unit %R% gender)
+
+
+# age_gender, age, gender, unit are pre-defined
+ls.str()
+
+# Extract age and make numeric
+as.numeric(str_extract(age_gender,pattern=age))
+
+# Replace age and units with ""
+genders <- str_remove(age_gender, pattern = age %R% unit)
+
+# Replace extra spaces # <regex> [\s]+
+str_remove_all(genders, pattern = one_or_more(SPC))
+
+
+# Numeric ages, from previous step
+ages_numeric <- as.numeric(str_extract(age_gender, age))
+
+# Extract units # <regex> [\s]?(?:YO|YR|MO)
+time_units <- str_extract(age_gender,pattern=unit)
+
+# Extract first word character
+time_units_clean <- str_extract(time_units,pattern=WRD)
+
+# Turn ages in months to years
+ifelse(time_units_clean == "Y", ages_numeric, ages_numeric / 12)
+
