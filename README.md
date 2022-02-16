@@ -1,6 +1,6 @@
-# text-mining-with-r
+# Text Mining with R
 
-Diferentes abordagens para organizar e analisar dados da variedade de texto (livros, artigos, documentos). Também é fornecida uma cartilha sobre expressões regulares e maneiras de pesquisar padrões comuns no texto com eficiência.
+Diferentes abordagens para organizar e analisar dados da variedade de texto (livros, artigos, documentos). Também é fornecida uma cartilha sobre expressões regulares e maneiras de pesquisar padrões comuns no texto com eficiência. Estima-se que mais de 70% dos dados de negócios potencialmente utilizáveis não sejam estruturados. A mineração de texto fornece uma coleção de técnicas que nos permite obter insights de dados não estruturados.
 
 ---
 
