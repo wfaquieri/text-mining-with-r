@@ -2,6 +2,8 @@
 
 Diferentes abordagens para organizar e analisar dados da variedade de texto (livros, artigos, documentos). Também é fornecida uma cartilha sobre expressões regulares e maneiras de pesquisar padrões comuns no texto com eficiência. Estima-se que mais de 70% dos dados de negócios potencialmente utilizáveis não sejam estruturados. A mineração de texto fornece uma coleção de técnicas que nos permite obter insights de dados não estruturados.
 
+A mineração de texto geralmente envolve o processo de estruturação do texto de entrada. O objetivo geral é, essencialmente, transformar texto em dados para análise, por meio da aplicação de processamento de linguagem natural (NLP) e métodos analíticos.
+
 ---
 
 ## Modelagem de Tópicos: Alocação de Dirichlet Latente (LDA)
